@@ -30,11 +30,11 @@ public class Game {
 		do {
 			String ein = JOptionPane.showInputDialog(hinweis);
 			eingabe = Integer.parseInt(ein);
-			if (eingabe <= _zeilen && eingabe >= 0) {
+			if (eingabe <= _zeilen-- && eingabe >= 0) {
 
 				ende = true;
 			} else {
-				System.out.println("Achtung: Bitte geben Sie nur einen Wert zwischen 0 und " + _zeilen);
+				System.out.println("Achtung: Bitte geben Sie nur einen Wert zwischen 0 und " + _zeilen--);
 			}
 		} while (ende == false);
 
@@ -45,8 +45,6 @@ public class Game {
 		if (Minenfeld[Zeile][Spalte] == "[x]") {
 			System.out.println("Boom - du hast leider die Bombe getroffen");
 			System.out.println("Game Over!");
-			
-			
 			SpielfeldAnzeigen(true);
 			return true;
 		}
@@ -65,10 +63,13 @@ public class Game {
 			}
 		}
 		if (minenanlegen == true) {
-			mineField[0][1] = "[x]";
-			mineField[(zeilen - 1)][0] = "[x]";
-			mineField[(zeilen - 1)][2] = "[x]";
-			mines = 3;
+			String x = JOptionPane.showInputDialog("Gib deine Anzahl der Minen an");
+			int Mineneingabe= Integer.parseInt(x);
+			for(int i =0;i<=Mineneingabe;i++) {
+				mineField[(int) ((Math.random()*_zeilen)+1)][(int) ((Math.random()*_spalten)+1)] = "[x]";
+			}
+
+
 		}
 		return mineField;
 
