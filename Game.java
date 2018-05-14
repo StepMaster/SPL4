@@ -10,27 +10,44 @@ public class Game {
 
 	public static void main(String[] args) {
 
-		String[][] Feld = SpielfeldAnlegen(_zeilen, _spalten, false);
 		boolean ende = false;
 		while (ende == false) {
-			SpielfeldAnzeigen();
+			SpielfeldAnzeigen(false);
+
 			int koZeile = eingabe("Bitte Zeile wählen");
 			int koSpalte = eingabe("Bitte Spalte wählen");
-			spielfeldPruefen(koZeile, koSpalte);
 
+			ende = spielfeldPruefen(koZeile, koSpalte);
 		}
 
 	}
 
 	public static int eingabe(String hinweis) {
-		String eingabe = JOptionPane.showInputDialog(hinweis);
-		return Integer.parseInt(eingabe);
+
+		int eingabe;
+		boolean ende = false;
+
+		do {
+			String ein = JOptionPane.showInputDialog(hinweis);
+			eingabe = Integer.parseInt(ein);
+			if (eingabe <= _zeilen && eingabe >= 0) {
+
+				ende = true;
+			} else {
+				System.out.println("Achtung: Bitte geben Sie nur einen Wert zwischen 0 und " + _zeilen);
+			}
+		} while (ende == false);
+
+		return eingabe;
 	}
 
 	public static boolean spielfeldPruefen(int Zeile, int Spalte) {
 		if (Minenfeld[Zeile][Spalte] == "[x]") {
 			System.out.println("Boom - du hast leider die Bombe getroffen");
-			System.out.println("Game Over");
+			System.out.println("Game Over!");
+			
+			
+			SpielfeldAnzeigen(true);
 			return true;
 		}
 
@@ -57,15 +74,32 @@ public class Game {
 
 	}
 
-	public static void SpielfeldAnzeigen() {
-		for (int z = 0; z < _zeilen; z++) {
-			for (int s = 0; s < _spalten; s++) {
-				System.out.print(Spielfeld[z][s]);
+	public static void SpielfeldAnzeigen(boolean minen) {
+		
+		if (minen == false) {
+			for (int z = 0; z < _zeilen; z++) {
+				for (int s = 0; s < _spalten; s++) {
+					System.out.print(Spielfeld[z][s]);
+				}
+				System.out.println();
 			}
-			System.out.println();
+			System.out.println("----------");
+			
+			
+			
+		} else {
+			for (int z = 0; z < _zeilen; z++) {
+				for (int s = 0; s < _spalten; s++) {
+					if (Minenfeld[z][s] == "[x]") {
+						System.out.print(Minenfeld[z][s]);
+					} else {
+						System.out.print(Spielfeld[z][s]);
+					}
+				}
+				System.out.println();
+			}
+			
 		}
-		System.out.println("----------");
-
 	}
 
 }
